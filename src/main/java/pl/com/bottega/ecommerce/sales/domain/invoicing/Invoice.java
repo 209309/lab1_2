@@ -32,8 +32,8 @@ public class Invoice {
 
     private Id id;
 
-    Invoice(Id invoiceId, ClientData client) {
-        this.id = invoiceId;
+    private Invoice(ClientData client) {
+        this.id = id.generate();
         this.client = client;
         this.items = new ArrayList<>();
 
@@ -46,6 +46,10 @@ public class Invoice {
 
         net = net.add(item.getNet());
         gros = gros.add(item.getGros());
+    }
+
+    public static Invoice createInvoice(ClientData client) {
+        return new Invoice(client);
     }
 
     /**
