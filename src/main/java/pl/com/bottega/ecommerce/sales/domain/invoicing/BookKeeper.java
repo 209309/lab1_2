@@ -14,40 +14,18 @@ package pl.com.bottega.ecommerce.sales.domain.invoicing;
 
 import java.math.BigDecimal;
 
+import org.w3c.dom.Text;
 import pl.com.bottega.ecommerce.canonicalmodel.publishedlanguage.Id;
 import pl.com.bottega.ecommerce.sharedkernel.Money;
 
-public class BookKeeper {
+public class BookKeeper{
 
-    public Invoice issuance(InvoiceRequest invoiceRequest) {
+    public Invoice issuance(InvoiceRequest invoiceRequest, TextCalculator calculator) {
         Invoice invoice = Invoice.createInvoice(Id.generate(), invoiceRequest.getClient());
 
         for (RequestItem item : invoiceRequest.getItems()) {
-            Money net = item.getTotalCost();
-            BigDecimal ratio = null;
-            String desc = null;
 
-            switch (item.getProductData()
-                        .getType()) {
-                case FOOD:
-                    ratio = BigDecimal.valueOf(0.07);
-                    desc = "7% (F)";
-                    break;
-                case STANDARD:
-                    ratio = BigDecimal.valueOf(0.23);
-                    desc = "23%";
-                    break;
-                case DRUG:
-                    ratio = BigDecimal.valueOf(0.05);
-                    desc = "5% (D)";
-                    break;
-                default:
-                    throw new IllegalArgumentException(item.getProductData()
-                                                           .getType()
-                                                       + " not handled");
-            }
-
-            Money taxValue = net.multiplyBy(ratio);
+            Money taxValue = TextCalculator.calculate(item);
 
             Tax tax = new Tax(taxValue, desc);
 
