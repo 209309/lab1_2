@@ -12,25 +12,24 @@
  */
 package pl.com.bottega.ecommerce.sales.domain.invoicing;
 
-import java.math.BigDecimal;
-import java.util.List;
-
 import pl.com.bottega.ecommerce.canonicalmodel.publishedlanguage.ClientData;
 import pl.com.bottega.ecommerce.canonicalmodel.publishedlanguage.Id;
 import pl.com.bottega.ecommerce.sharedkernel.Money;
 
+import java.math.BigDecimal;
+import java.util.List;
+
 public class BookKeeper {
 
-    public Invoice issuance(ClientData client, List<RequestItem> items) {
-        Invoice invoice = new Invoice(Id.generate(), client);
+    public Invoice issuance(InvoiceRequest invoiceRequest) {
+        Invoice invoice = Invoice.createInvoice(Id.generate(), invoiceRequest.getClient());
 
-        for (RequestItem item : items) {
+        for (RequestItem item : invoiceRequest.getItems()) {
             Money net = item.getTotalCost();
             BigDecimal ratio = null;
             String desc = null;
 
-            switch (item.getProductData()
-                        .getType()) {
+            switch (item.getProductData().getType()) {
                 case FOOD:
                     ratio = BigDecimal.valueOf(0.07);
                     desc = "7% (F)";
@@ -44,9 +43,7 @@ public class BookKeeper {
                     desc = "5% (D)";
                     break;
                 default:
-                    throw new IllegalArgumentException(item.getProductData()
-                                                           .getType()
-                                                       + " not handled");
+                    throw new IllegalArgumentException(item.getProductData().getType() + " not handled");
             }
 
             Money taxValue = net.multiplyBy(ratio);
