@@ -1,10 +1,6 @@
 package pl.com.bottega.ecommerce.sales.domain.invoicing;
 
-import pl.com.bottega.ecommerce.sharedkernel.Money;
-
-import java.math.BigDecimal;
-
 public interface TaxCalculator {
 
-    Money calculateTaxValue(Money net, BigDecimal ratio);
+    Tax calculateTaxValue(RequestItem item);
 }
