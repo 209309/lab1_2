@@ -24,15 +24,19 @@ public class Payment {
 
     private Id aggregateId;
 
-    public Payment(Id aggregateId, ClientData clientData, Money amount) {
-        this.aggregateId = aggregateId;
+    private Payment(ClientData clientData, Money amount) {
+        this.aggregateId = Id.generate();
         this.clientData = clientData;
         this.amount = amount;
     }
 
-    public Payment rollBack() {
-        Id id = Id.generate();
+    public static Payment createPayment(ClientData clientData, Money amount) {
 
-        return new Payment(id, clientData, amount.multiplyBy(-1));
+        return new Payment(clientData, amount);
+    }
+
+    public Payment rollBack() {
+
+        return new Payment(clientData, amount.multiplyBy(-1));
     }
 }
