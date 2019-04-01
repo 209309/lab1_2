@@ -16,10 +16,24 @@ public class MoneyTest {
     }
 
     @Test
-    public void shouldReturnTrueIfFirstIsGrater() {
+    public void shouldReturnTrueIfFirstIsGreater() {
         money = new Money(5);
         moneyTwo = new Money(0);
         Assert.assertThat(true, is(money.greaterThan(moneyTwo)));
+    }
+
+    @Test
+    public void shouldReturnFalseIfFirstIsLesser() {
+        money = new Money(0);
+        moneyTwo = new Money(5);
+        Assert.assertThat(false, is(money.greaterThan(moneyTwo)));
+    }
+
+    @Test
+    public void shouldReturnFalseIfEqual() {
+        money = new Money(5);
+        moneyTwo = new Money(5);
+        Assert.assertThat(false, is(money.greaterThan(moneyTwo)));
     }
 
     @Test
