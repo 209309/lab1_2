@@ -30,7 +30,7 @@ public class MoneyTest {
     }
 
     @Test
-    public void shouldReturnFalseIfEqual() {
+    public void shouldReturnFalseIfEqualGreaterThan() {
         money = new Money(5);
         moneyTwo = new Money(5);
         Assert.assertThat(false, is(money.greaterThan(moneyTwo)));
@@ -40,6 +40,20 @@ public class MoneyTest {
     public void shouldReturnFalseIfFirstIsGrater() {
         money = new Money(5);
         moneyTwo = new Money(0);
+        Assert.assertThat(false, is(money.lessThan(moneyTwo)));
+    }
+
+    @Test
+    public void shouldReturnTrueIfFirstIsLesser() {
+        money = new Money(0);
+        moneyTwo = new Money(5);
+        Assert.assertThat(true, is(money.lessThan(moneyTwo)));
+    }
+
+    @Test
+    public void shouldReturnFalseIfEqualLessThan() {
+        money = new Money(5);
+        moneyTwo = new Money(5);
         Assert.assertThat(false, is(money.lessThan(moneyTwo)));
     }
 
